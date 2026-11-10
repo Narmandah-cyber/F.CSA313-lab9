@@ -1,0 +1,18 @@
+AI (Google Gemini)-гийн тестийн класс — хоёр төлөвт тулгасан хэмжилт
+Үүсгэсэн: 2026-11-10 19:31
+Тестийн класс: ai-test/AiScholarshipCalculatorTest.java
+
+=================== 1-АЛДААТАЙ-код(> 60) ===================
+код: if (score > 60)
+Tests run: 22, Failures: 1, Errors: 0, Skipped: 0
+Instruction 152/152  Branch 41/41  Line 25/25
+  унав: AiScholarshipCalculatorTest.scholarshipCreditBoundaryConditions:155 expected: <0> but was: <70>
+
+=================== 2-ЗАССАН-код(>= 60) ===================
+код: if (score >= 60)
+Tests run: 22, Failures: 3, Errors: 0, Skipped: 0
+Instruction 152/152  Branch 41/41  Line 25/25
+  унав: AiScholarshipCalculatorTest.gpaAllGradeCategories:88 expected: <0.0> but was: <1.0>
+  унав: AiScholarshipCalculatorTest.letterGradeF:54 expected: <F> but was: <D>
+  унав: AiScholarshipCalculatorTest.scholarshipCreditBoundaryConditions:155 expected: <0> but was: <70>
+
