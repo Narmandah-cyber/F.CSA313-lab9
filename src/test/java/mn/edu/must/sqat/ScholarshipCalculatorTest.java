@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *   Хэсэг A — хэвийн урсгал (happy path)
  *   Хэсэг B — CFG-ийн бүх ирмэгийг дайрч branch/line хамралтыг 100% болгох
  *   Хэсэг C — gpa()-ийн давталтын заагууд (0 / 1 / 2+ дүрэм)
+ *   Хэсэг D — letterGrade()-ийн ЗААГ утгууд: хамралт 100% байсан ч
+ *             эдгээрийн нэг нь кодын алдааг илрүүлнэ
  */
 class ScholarshipCalculatorTest {
 
@@ -174,5 +176,53 @@ class ScholarshipCalculatorTest {
     @DisplayName("C4: давталт 2+ удаа — [95,85,75,65] -> 2.5")
     void gpa_fourScores_returns2point5() {
         assertEquals(2.5, calc.gpa(new double[]{95, 85, 75, 65}), 1e-9);
+    }
+
+    // =================================================================
+    // Хэсэг D — letterGrade()-ийн зааг (boundary) утгууд
+    // Хамралт аль хэдийн 100% боловч эдгээр утгууд спецификацийн
+    // ЯГ хилийг шалгадаг тул өөр мэдээлэл өгнө.
+    // =================================================================
+
+    @Test
+    @DisplayName("D1: 0 оноо -> F (мужийн доод хил)")
+    void letterGrade_score0_returnsF() {
+        assertEquals("F", calc.letterGrade(0));
+    }
+
+    @Test
+    @DisplayName("D2: 59.99 оноо -> F (F-ийн дээд хил)")
+    void letterGrade_score59point99_returnsF() {
+        assertEquals("F", calc.letterGrade(59.99));
+    }
+
+    @Test
+    @DisplayName("D3: 60 оноо -> D (спецификаци: 60-69.99 -> D)")
+    void letterGrade_score60_returnsD() {
+        assertEquals("D", calc.letterGrade(60));
+    }
+
+    @Test
+    @DisplayName("D4: 69.99 оноо -> D (D-ийн дээд хил)")
+    void letterGrade_score69point99_returnsD() {
+        assertEquals("D", calc.letterGrade(69.99));
+    }
+
+    @Test
+    @DisplayName("D5: 89.99 оноо -> B (B-ийн дээд хил)")
+    void letterGrade_score89point99_returnsB() {
+        assertEquals("B", calc.letterGrade(89.99));
+    }
+
+    @Test
+    @DisplayName("D6: 90 оноо -> A (A-гийн доод хил)")
+    void letterGrade_score90_returnsA() {
+        assertEquals("A", calc.letterGrade(90));
+    }
+
+    @Test
+    @DisplayName("D7: 100 оноо -> A (мужийн дээд хил)")
+    void letterGrade_score100_returnsA() {
+        assertEquals("A", calc.letterGrade(100));
     }
 }
