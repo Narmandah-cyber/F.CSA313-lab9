@@ -1,0 +1,56 @@
+digraph scholarship_cfg {
+  rankdir=TB;
+  bgcolor="white";
+  graph [fontname="DejaVu Sans", fontsize=13, nodesep=0.45, ranksep=0.55, labelloc="t",
+         label="scholarship(gpa, credits, hasViolation) — Control Flow Graph\n18 ирмэг = JaCoCo-гийн 18 салаа; ирмэг бүр дээр түүнийг дайрах тестийн нэр"];
+  node  [fontname="DejaVu Sans", fontsize=11];
+  edge  [fontname="DejaVu Sans", fontsize=9, color="#555555"];
+
+  ENTRY [shape=ellipse, style=filled, fillcolor="#dbeafe", label="ENTRY\nscholarship(gpa, credits, hasViolation)"];
+
+  D1 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D1\ngpa < 0 ?"];
+  D2 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D2\ngpa > 4 ?"];
+  D3 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D3\ncredits < 0 ?"];
+  D4 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D4\nhasViolation ?"];
+  D5 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D5\ngpa >= 3.8 ?"];
+  D6 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D6\ncredits >= 15 ?"];
+  D7 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D7\ngpa >= 3.4 ?"];
+  D8 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D8\ncredits >= 12 ?"];
+  D9 [shape=diamond, style=filled, fillcolor="#fef3c7", label="D9\ngpa >= 3.0 ?"];
+
+  THROW [shape=box, style="filled,rounded", fillcolor="#fecaca", label="throw\nIllegalArgumentException"];
+  R0V   [shape=box, style="filled,rounded", fillcolor="#d1fae5", label="return 0\n(сахилгын зөрчил)"];
+  R100  [shape=box, style="filled,rounded", fillcolor="#d1fae5", label="return 100"];
+  R70   [shape=box, style="filled,rounded", fillcolor="#d1fae5", label="return 70"];
+  R50   [shape=box, style="filled,rounded", fillcolor="#d1fae5", label="return 50"];
+  R0    [shape=box, style="filled,rounded", fillcolor="#d1fae5", label="return 0\n(босго хангаагүй)"];
+
+  ENTRY -> D1;
+
+  D1 -> THROW [label=" үнэн\l scholarship_negativeGpa_throws\l", color="#b91c1c", fontcolor="#b91c1c"];
+  D1 -> D2    [label=" худал\l (бусад бүх тест)\l"];
+
+  D2 -> THROW [label=" үнэн\l scholarship_gpaAbove4_throws\l", color="#b91c1c", fontcolor="#b91c1c"];
+  D2 -> D3    [label=" худал\l (бусад бүх тест)\l"];
+
+  D3 -> THROW [label=" үнэн\l scholarship_negativeCredits_throws\l", color="#b91c1c", fontcolor="#b91c1c"];
+  D3 -> D4    [label=" худал\l (бусад бүх тест)\l"];
+
+  D4 -> R0V [label=" үнэн\l scholarship_withViolation_returns0\l", color="#1d4ed8", fontcolor="#1d4ed8"];
+  D4 -> D5  [label=" худал\l (бусад бүх тест)\l"];
+
+  D5 -> D6 [label=" үнэн\l scholarship_highGpaAndCredits_returns100\l scholarship_highGpaButLowCredits_returns70\l", color="#1d4ed8", fontcolor="#1d4ed8"];
+  D5 -> D7 [label=" худал\l scholarship_midGpaAndCredits_returns70\l scholarship_gpaBelow34_returns50\l"];
+
+  D6 -> R100 [label=" үнэн\l scholarship_highGpaAndCredits_returns100\l", color="#1d4ed8", fontcolor="#1d4ed8"];
+  D6 -> D7   [label=" худал\l scholarship_highGpaButLowCredits_returns70\l"];
+
+  D7 -> D8 [label=" үнэн\l scholarship_midGpaAndCredits_returns70\l scholarship_midGpaButLowCredits_returns50\l", color="#1d4ed8", fontcolor="#1d4ed8"];
+  D7 -> D9 [label=" худал\l scholarship_gpaBelow34_returns50\l scholarship_lowGpa_returns0\l"];
+
+  D8 -> R70 [label=" үнэн\l scholarship_midGpaAndCredits_returns70\l", color="#1d4ed8", fontcolor="#1d4ed8"];
+  D8 -> D9  [label=" худал\l scholarship_midGpaButLowCredits_returns50\l"];
+
+  D9 -> R50 [label=" үнэн\l scholarship_gpaBelow34_returns50\l", color="#1d4ed8", fontcolor="#1d4ed8"];
+  D9 -> R0  [label=" худал\l scholarship_lowGpa_returns0\l"];
+}
